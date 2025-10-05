@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assistant d'Écriture de Roman</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Indique à Tailwind d'utiliser une classe (ici 'dark') pour le mode sombre,
+      // plutôt que de se baser sur les préférences du système d'exploitation.
+      tailwind.config = {
+        darkMode: 'class',
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --verbatim-original-bg: #E0F2F1; /* Teal 50 */
+        --verbatim-original-text: #00796B; /* Teal 700 */
+        --verbatim-user-bg: #E8EAF6; /* Indigo 50 */
+        --verbatim-user-text: #3F51B5; /* Indigo 500 */
+      }
+      html.dark {
+        --verbatim-original-bg: #004D40; /* Teal 900 */
+        --verbatim-original-text: #A7FFEB; /* Teal A100 */
+        --verbatim-user-bg: #1A237E; /* Indigo 900 */
+        --verbatim-user-text: #C5CAE9; /* Indigo 200 */
+      }
+      body {
+        font-family: 'Source Sans 3', sans-serif;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'Lora', serif;
+      }
+      .verbatim {
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Lora', serif;
+        font-style: italic;
+      }
+      .verbatim-original {
+        background-color: var(--verbatim-original-bg);
+        color: var(--verbatim-original-text);
+      }
+      .verbatim-user {
+        background-color: var(--verbatim-user-bg);
+        color: var(--verbatim-user-text);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.22.0",
+    "pdfjs-dist/": "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/",
+    "idb": "https://aistudiocdn.com/idb@^8.0.3"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

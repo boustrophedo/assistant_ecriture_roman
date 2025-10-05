@@ -1,0 +1,5 @@
+{
+  "name": "assistant d'écriture essai déploiement",
+  "description": "Une application pour aider les auteurs de romans jeunesse à s'entraîner en réécrivant et en analysant des scènes de texte. L'IA extrait une scène, génère un exercice d'écriture, puis fournit une analyse comparative détaillée.",
+  "requestFramePermissions": []
+}
