@@ -1,11 +1,36 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import type { AnalysisBlock, AnalysisResult, HistoricExercise, PersonalizedFeedback } from '../types';
 
-if (!process.env.API_KEY) {
-    throw new Error("La variable d'environnement API_KEY n'est pas définie.");
+let apiKey = '';
+try {
+  // Ce bloc lèvera une ReferenceError dans un environnement de navigateur pur où `process` n'est pas défini.
+  // Le bloc catch l'interceptera, et apiKey restera une chaîne vide, ce qui est le comportement attendu.
+  if (process && process.env && process.env.API_KEY) {
+    apiKey = process.env.API_KEY;
+  }
+} catch (e) {
+  // Ignorer l'erreur en toute sécurité, car cela signifie simplement que nous ne sommes pas dans un environnement Node.js.
+  console.info("Could not access process.env.API_KEY. This is expected in a browser environment.");
 }
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const API_KEY = apiKey;
+export const isApiKeySet = !!API_KEY;
+
+let ai: GoogleGenAI | null = null;
+
+/**
+ * Gets the singleton instance of the GoogleGenAI client, initializing it if necessary.
+ * Throws an error if the API key is not set.
+ */
+function getAiClient(): GoogleGenAI {
+    if (!API_KEY) {
+        throw new Error("La clé API Gemini n'est pas configurée.");
+    }
+    if (!ai) {
+        ai = new GoogleGenAI({ apiKey: API_KEY });
+    }
+    return ai;
+}
 
 interface SceneExtractionResult {
     extractedScene: string;
@@ -41,7 +66,7 @@ export async function extractSceneAndGeneratePrompt(documentText: string, topic?
         ---
     `;
 
-    const response = await ai.models.generateContent({
+    const response = await getAiClient().models.generateContent({
         model: "gemini-2.5-flash",
         contents: prompt,
         config: {
@@ -104,7 +129,7 @@ export async function analyzeTexts(originalText: string, userText: string, targe
         --- FIN DU TEXTE DE L'UTILISATEUR ---
     `;
 
-    const response = await ai.models.generateContent({
+    const response = await getAiClient().models.generateContent({
         model: "gemini-2.5-flash",
         contents: prompt,
         config: {
@@ -190,7 +215,7 @@ export async function getPersonalizedFeedbackAndExercises(history: HistoricExerc
         Assure-toi que ta sortie est un unique objet JSON valide, sans texte additionnel.
     `;
 
-    const response = await ai.models.generateContent({
+    const response = await getAiClient().models.generateContent({
         model: "gemini-2.5-flash",
         contents: prompt,
         config: {
